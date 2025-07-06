@@ -2,6 +2,7 @@ import express from "express"
 import connectDB from "./config/mongodb.js"; //import from the mongodb.js 
 
 import userRoutes from "./routes/userRoutes.js" //import from the userRoutes
+import toDoRoutes from "./routes/toDoRoutes.js" 
 
 import dotenv from "dotenv"
 dotenv.config();
@@ -21,6 +22,7 @@ connectDB()//call the function from the mongodb.js
 // })
 
 app.use("/api", userRoutes)
+app.use("/api/todo", toDoRoutes)
 
 
 app.listen(PORT, ()=>{

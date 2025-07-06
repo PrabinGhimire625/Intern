@@ -26,7 +26,7 @@ export const userRegistration = async (req, res) => {
             password: hashedPassword,
             role
         })
-        return res.status(200).json({ message: "User register successfully", data: newUser })
+        res.status(200).json({ message: "User register successfully", data: newUser })
 
     } catch (err) {
         res.status(500).json({ error: "Internal server error" })
@@ -61,7 +61,7 @@ export const userLogin = async (req, res) => {
         const payload = { id: existingUser.id, role: existingUser.role }
         const token = jwt.sign(payload, process.env.JWT_SECRETE, { expiresIn: "1h" });
 
-        return res.status(200).json({ message: "User login successfull", token, data: existingUser })
+        res.status(200).json({ message: "User login successfull", token, data: existingUser })
 
     } catch (err) {
         res.status(500).json({ error: "Internal server error" })
