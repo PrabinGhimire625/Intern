@@ -16,7 +16,7 @@ export const userRegistration = async (req, res) => {
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
-            return res.status(404).json({ message: "Email is already!" })
+            return res.status(404).json({ message: "Email is already register!" })
         }
 
         const hashedPassword = await bcrypt.hash(password, 14); // password hashing
@@ -33,7 +33,6 @@ export const userRegistration = async (req, res) => {
 
     }
 }
-
 
 
 //user login api
@@ -68,3 +67,85 @@ export const userLogin = async (req, res) => {
 
     }
 }
+
+// get all the users
+export const getAllUsers = async (req, res) => {
+    try {
+        const user = await User.find();
+        if(!user){
+            res.status(400).json({ message: "User not found"});
+        }
+        res.status(200).json({ message: "Successfully get all the users", data: user });
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+//fetch single users
+export const singleUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log("Id from the postman : ", id)
+        const users = await User.findById(id);
+        if(!users){
+            return res.status(400).json({ message: "User not found" });
+        }
+        res.status(200).json({ message: "Single user fetch successfully", data:users})
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+//user profile
+export const userProfile= async(req, res)=>{
+    try{
+        const id=req.user.id;
+        const user= await User.findById(id);
+        if(!user){
+            return res.status(400).json({message: " User not found"})
+        }
+         res.status(200).json({ message: "User profile fetch successfully", data:user})
+    }catch(err){
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+//update  userProfile
+export const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {username, password } = req.body;  //postman  ....frontend
+        //status code 
+        if (!username || !password) {
+            return res.status(400).json({ message: "Username and password must required" });
+        }
+        const existingUser = await User.findOne({ username });
+        const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+
+        res.status(200).json({ message: "User updated successfully", data: user })
+
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error" });
+
+    }
+}
+
+
+//delete user
+export const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByIdAndDelete(id);
+         if(!user){
+            return res.status(400).json({ message: "User not found" });
+        }
+        res.status(200).json({ message: "User deleted successfully"})
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error" });
+
+    }
+}
+

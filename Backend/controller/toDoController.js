@@ -5,8 +5,6 @@ import ToDo from "../model/todoModel.js";
 export const createTodo = async (req, res) => {
     try {
         const { title, description } = req.body;  //postman  ....frontend
-        console.log("Title : ", title);
-        console.log("Desc : ", description)
 
         //status code 
         if (!title || !description) {
@@ -55,13 +53,10 @@ export const singleTodo = async (req, res) => {
 }
 
 
-
-
 //update  API
 export const updateTodo = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log("ID from : ", id)
         const { title, description } = req.body;  //postman  ....frontend
 
         //status code 
@@ -92,6 +87,9 @@ export const deleteTodo = async (req, res) => {
             return res.status(400).json({ message: "Id must be required" });
         }
         const todo = await ToDo.findByIdAndDelete(id);
+        if(!todo){
+            return res.status(400).json({ message: "Todo not found" });
+        }
         res.status(200).json({ message: "Todo deleted successfully"})
     } catch (err) {
         res.status(500).json({ error: "Internal server error" });
