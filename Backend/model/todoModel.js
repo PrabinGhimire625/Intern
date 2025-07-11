@@ -6,6 +6,7 @@ const todoSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 const ToDo = mongoose.model("ToDo", todoSchema);
+
 export default ToDo
 
 

@@ -7,10 +7,12 @@ export const createTodo = async (req, res) => {
         if (!title || !description) {
             return res.status(400).json({ message: "Title and the description must required" });
         }
+        
         const existingTodo = await ToDo.findOne({ title });
         if (existingTodo) {
             return res.status(404).json({ message: "Title already exist" });
         }
+        
         const todo = await ToDo.create({
             title, description
         });
@@ -32,14 +34,19 @@ export const getTodo = async (req, res) => {
     }
 }
 
+//findOne
 
 //fetch single todo
 export const singleTodo = async (req, res) => {
     try {
         const { id } = req.params;
+        if(!id){
+             return res.status(400).json({ message: "Todo not found" });
+        }
+
         const todo = await ToDo.findById(id);
         if(!todo){
-            return res.status(400).json({ message: "Todo not found" });
+            return res.status(404).json({ message: "Todo not found" });
         }
         res.status(200).json({ message: "Single todo fetch successfully", data:todo})
     } catch (err) {
@@ -59,10 +66,10 @@ export const updateTodo = async (req, res) => {
             return res.status(400).json({ message: "Title and desc must required" });
         }
 
-        const existingTodo = await ToDo.findOne({ title });
-        if (existingTodo) {
-            return res.status(404).json({ message: "Title already exist" });
-        }
+        // const existingTodo = await ToDo.findOne({ title });
+        // if (existingTodo) {
+        //     return res.status(404).json({ message: "Title already exist" });
+        // }
 
         const todo = await ToDo.findByIdAndUpdate(id, req.body, { new: true });
         //const todo = await ToDo.findByIdAndUpdate(id, { title, description }, { new: true });
@@ -120,3 +127,5 @@ export const searchTodo= async(req, res)=>{
 
     }
 }
+
+

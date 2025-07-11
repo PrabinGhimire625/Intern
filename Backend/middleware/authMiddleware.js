@@ -13,7 +13,7 @@ export const isAuthenticated = async (req, res, next) => {
     if (!token) {
         return res.status(401).json({ message: " Token not found" });
     }
-
+//call back function
     jwt.verify(token, process.env.JWT_SECRETE, async (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: " Invalid token" });
@@ -24,7 +24,7 @@ export const isAuthenticated = async (req, res, next) => {
                 if (!userData) {
                     return res.status(404).json({ message: " No user with that token" });
                 }
-                req.user = userData;  //use it 
+                req.user = userData;  //use it in other places
                 next();
             } catch (err) {
                 res.status(500).json({ message: " Internal server error" })

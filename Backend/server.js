@@ -1,9 +1,8 @@
 import express from "express"
 import connectDB from "./config/mongodb.js"; //import from the mongodb.js 
-
 import userRoutes from "./routes/userRoutes.js" //import from the userRoutes
 import toDoRoutes from "./routes/toDoRoutes.js" 
-
+import cors from "cors"
 import dotenv from "dotenv"
 dotenv.config();
 
@@ -11,6 +10,8 @@ dotenv.config();
 const app=express();
 const PORT= process.env.PORT || 3000;
 
+//
+app.use(cors())
 app.use(express.json());
 
 connectDB()//call the function from the mongodb.js
