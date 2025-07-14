@@ -13,6 +13,8 @@ const Register = () => {
         password:""
     })
 
+    //username, email , password= title, description
+
     const handleChange=(e)=>{
         const{name, value}=e.target;
         setUserData({
@@ -22,13 +24,18 @@ const Register = () => {
     }
     
     const handleSubmit= async(e)=>{
-        e.preventDefault();
+        e.preventDefault(); 
         const response=  await axios.post("http://localhost:3000/api/register", userData);
+        //const response=  await axios.post("http://localhost:3000/api/todo/create", userData);
         console.log("Data in the response : ", response.data)
         alert("User successfully register");
         navigate("/login")
+        //navigate("/")
 
     }
+
+    //
+
 
     return (
         <>
@@ -65,7 +72,7 @@ const Register = () => {
                                         <label htmlFor="terms" className="font-light text-gray-500 dark:text-gray-300">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
                                     </div>
                                 </div>
-                                <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
+                                <button type="submit" className="w-full border-4 border-white text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</Link>
                                 </p>
