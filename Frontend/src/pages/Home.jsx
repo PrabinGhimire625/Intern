@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../globals/Navbar';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { API } from '../http';
 
 const Home = () => {
 
@@ -10,7 +11,7 @@ const Home = () => {
     useEffect(() => {
         const fetchTodos = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/todo/getAll");
+                const response = await API.get("/api/todo/getAll");
                 setTodos(response.data.data);
             } catch (err) {
                 console.log("Error on fetching the data");

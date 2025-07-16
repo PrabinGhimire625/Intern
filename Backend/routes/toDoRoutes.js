@@ -4,7 +4,7 @@ import { isAuthenticated, restrictTo, Role } from "../middleware/authMiddleware.
 
 const router=Router();
 
-router.route("/create").post(isAuthenticated, restrictTo(Role.User), createTodo);
+router.route("/create").post(isAuthenticated,restrictTo(Role.User), createTodo);
 
 router.route("/getAll").get(getTodo);
 router.route("/:id").get(isAuthenticated, singleTodo);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { APIAuthenticated } from '../http';
 
 const CreateToDo = () => {
   const navigate = useNavigate();
@@ -23,11 +24,7 @@ const CreateToDo = () => {
 
     const token = localStorage.getItem('token');
     try {
-      await axios.post("http://localhost:3000/api/todo/create", todoData, {
-        headers: {
-          Authorization: `${token}`
-        }
-      });
+      await APIAuthenticated.post("/api/todo/create", todoData);
       alert("Todo created successfully");
       navigate("/");
     } catch (error) {

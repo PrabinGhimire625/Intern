@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState({
+    username: ''
+  });
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -14,7 +16,7 @@ const Profile = () => {
           headers: { Authorization: `${token}` }
         });
         setUser(response.data.data);
-        setUsername(response.data.data.username);
+        setUserData({ username: response.data.data.username });
       } catch (err) {
         console.log("Error on fetching the data");
       }
@@ -23,20 +25,25 @@ const Profile = () => {
     fetchUserProfile();
   }, []);
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  // Generic handleChange for any input with name attribute
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
   };
 
-  const handleUpate = async () => {
+  const handleUpdate = async () => {
     const token = localStorage.getItem('token');
     try {
       await axios.patch(
         `http://localhost:3000/api/updateUser/${user._id}`,
-        { username },
+        { username: userData.username }, // send updated username
         { headers: { Authorization: `${token}` } }
       );
       alert("Username updated successfully");
-      setUser({ ...user, username });
+      setUser({ ...user, username: userData.username }); 
       setIsEditing(false);
     } catch (err) {
       alert("Failed to update username");
@@ -72,14 +79,15 @@ const Profile = () => {
             <>
               <input
                 type="text"
-                value={username}
-                onChange={handleUsernameChange}
+                name="username"
+                value={userData.username}
+                onChange={handleChange}
                 className="border rounded p-1 text-center text-2xl font-bold"
                 autoFocus
               />
               <div className="mt-2 space-x-2">
                 <button
-                  onClick={handleUpate}
+                  onClick={handleUpdate}
                   className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
                 >
                   Save
@@ -87,7 +95,7 @@ const Profile = () => {
                 <button
                   onClick={() => {
                     setIsEditing(false);
-                    setUsername(user.username);
+                    setUserData({ username: user.username }); 
                   }}
                   className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
                 >

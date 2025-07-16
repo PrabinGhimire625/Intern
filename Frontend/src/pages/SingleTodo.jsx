@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { APIAuthenticated } from '../http';
 
 const SingleTodo = () => {
     const { id } = useParams();
@@ -17,10 +18,7 @@ const SingleTodo = () => {
     useEffect(() => {
         const fetchSingleTodo = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:3000/api/todo/${id}`, {
-                    headers: { Authorization: `${token}` }
-                });
+                const response = await APIAuthenticated.get(`/api/todo/${id}`);
                 setSingleTodo(response.data.data);
                 setUpdatedTodo({
                     title: response.data.data.title,
@@ -36,23 +34,18 @@ const SingleTodo = () => {
 
     const handleDelete = async () => {
         try {
-            const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:3000/api/todo/delete/${id}`, {
-                headers: { Authorization: `${token}` }
-            });
+            await APIAuthenticated.delete(`/api/todo/delete/${id}`);
             alert('Todo deleted successfully');
             navigate('/');
         } catch (err) {
             alert('Failed to delete todo');
         }
     };
+    
 
     const handleUpdate = async () => {
         try {
-            const token = localStorage.getItem('token');
-            await axios.patch(`http://localhost:3000/api/todo/update/${id}`, updatedTodo, {
-                headers: { Authorization: `${token}` }
-            });
+            await APIAuthenticated.patch(`/api/todo/update/${id}`, updatedTodo);
             alert('Todo updated successfully');
             setSingleTodo(updatedTodo);
             setEditMode(false);
