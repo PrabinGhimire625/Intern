@@ -12,11 +12,6 @@ import SingleTodo from './pages/SingleTodo'
 function App() {
 
   return (
-    //protected routing 
-    //if not login vana redirect to the login pages instead of open the blank browser window
-
-
-
     <>
     <BrowserRouter>
         <Navbar />

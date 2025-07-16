@@ -111,9 +111,9 @@ export const userProfile= async(req, res)=>{
 export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const {username, password } = req.body;
-        if (!username || !password) {
-            return res.status(400).json({ message: "Username and password must required" });
+        const {username } = req.body;
+        if (!username ) {
+            return res.status(400).json({ message: "Username must required" });
         }
         const existingUser = await User.findOne({ username });
         const user = await User.findByIdAndUpdate(id, req.body, { new: true });
