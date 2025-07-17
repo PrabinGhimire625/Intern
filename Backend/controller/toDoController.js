@@ -2,7 +2,6 @@ import ToDo from "../model/todoModel.js";
 
 //create todo
 export const createTodo = async (req, res) => {
-    try {
         const { title, description } = req.body;  
         if (!title || !description) {
             return res.status(400).json({ message: "Title and the description must required" });
@@ -17,28 +16,21 @@ export const createTodo = async (req, res) => {
             title, description
         });
         res.status(200).json({ message: "Todo created successfully", data: todo })
-
-    } catch (err) {
-        res.status(500).json({ error: "Internal server error" });
-    }
 }
 
 
 // get all todo
 export const getTodo = async (req, res) => {
-    try {
         const todo = await ToDo.find().sort({ createdAt: -1 });
         res.status(200).json({ message: "Todo created successfully", data: todo });
-    } catch (err) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+
 }
 
 //findOne
 
 //fetch single todo
 export const singleTodo = async (req, res) => {
-    try {
+
         const { id } = req.params;
         if(!id){
              return res.status(400).json({ message: "Todo not found" });
@@ -49,9 +41,7 @@ export const singleTodo = async (req, res) => {
             return res.status(404).json({ message: "Todo not found" });
         }
         res.status(200).json({ message: "Single todo fetch successfully", data:todo})
-    } catch (err) {
-        res.status(500).json({ error: "Internal server error" });
-    }
+ 
 }
 
 
